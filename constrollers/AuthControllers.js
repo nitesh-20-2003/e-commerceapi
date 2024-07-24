@@ -7,7 +7,9 @@ const {
   BadRequestError,
 } = require("../errors");
 const jwt = require("jsonwebtoken");
-const {attach_cookietoresp} = require("../utils");
+const { createjwt,
+  isvalidtoken,
+  attach_cookietoresp} = require('../utils');
 const register = async (req, res, next) =>
    {
     const {email,name,password}=req.body;
@@ -54,7 +56,6 @@ res.cookie("token", "logout", {
 });
 res.status(StatusCodes.OK).json({msg:`user logedout`})
 };
-
 module.exports = {
   register,
   login,
