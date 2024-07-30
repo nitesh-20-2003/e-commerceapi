@@ -4,7 +4,10 @@ const app=express();
 require('express-async-errors');
 const morgan=require('morgan');
 const cookie_parser=require('cookie-parser');
-const authenticateUser = require("./middleware/authentication");
+const {
+  authenticatepayload,
+  authorizePermissions
+} = require("./middleware/authentication");
 const jwt=require('jsonwebtoken')
 //db
 const connectDB=require('./db/connect');
@@ -27,7 +30,7 @@ app.get('/',(req,res)=>
     res.send('hello world');
 })
 app.use('/api/v1/auth',authrouter);
-app.use("/api/v1/users", authenticateUser,userroute);
+app.use("/api/v1/users",authenticatepayload,userroute);
 app.use(notFound);
 app.use(error_handler);
 
@@ -41,3 +44,4 @@ try {
     console.log(error);
 }
 })();
+

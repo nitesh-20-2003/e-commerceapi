@@ -7,10 +7,11 @@ const {
   UpdateUsers,
   UpdateUserspassword,
 } = require("../constrollers/UserControler");
+const {authenticatepayload,authorizePermissions}=require('../middleware/authentication');
 // const {starter}=require('../constrollers/RouteController');
-router.route("/").get(getAllUsers);
+router.route("/").get(authorizePermissions('admin','owner'),getAllUsers);
 router.route("/showme").get(showCurrentUsers);
-router.route("/:id").get(getsingleUsers);
 router.route("/updateuser").patch(UpdateUsers);
-router.route("/UpdateUserspassword").post(UpdateUserspassword);
+router.route("/UpdateUserspassword").post(authorizePermissions,UpdateUserspassword);
+router.route("/:id").get(getsingleUsers);
 module.exports = router;

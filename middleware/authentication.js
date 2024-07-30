@@ -1,19 +1,39 @@
 const { CustomAPIError,
   UnauthenticatedError,
   NotFoundError,
-  BadRequestError}=require('../errors');
+  BadRequestError,UnautthorizedError}=require('../errors');
   const {
       createjwt,
   isvalidtoken,
   attach_cookietoresp
   }=require('../utils');
-  const authenticateUser=async(req,res,next)=>{
+  const authenticatepayload=async(req,res,next)=>{
     const token = req.signedCookies.token;
     if(!token)
         {
-            console.log('error,no token present');
+           throw new UnauthenticatedError('Authentication Invalid..')
         }
-        console.log('token present');
-        next();
+        try {
+            const payload=isvalidtoken({token});
+            req.user = { name: payload.name, payload_id: payload._id, role: payload.role };
+
+            next();
+          console.log(payload);
+        } catch (error) 
+        {
+            throw new UnauthenticatedError('Authentication Invalid');
+        }
   };
-  module.exports =authenticateUser;
+  const authorizePermissions=(...roles)=>
+ {
+  return async(req,res,next)=>{
+    if(!roles.includes(req.user.role))
+      {
+        throw new UnautthorizedError('unauthrized to acess...')
+      };
+
+    next();
+  };
+   
+  };
+  module.exports ={authenticatepayload,authorizePermissions};
