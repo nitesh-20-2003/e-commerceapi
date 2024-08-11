@@ -20,7 +20,9 @@ const createjwt=({payload})=>
      
      return  res.status(StatusCodes.CREATED).json({ user:user});
     }
-const isvalidtoken=({token })=>jwt.verify(token,process.env.jwt_secret)
+const isvalidtoken=({token})=>
+ jwt.verify(token,process.env.jwt_secret)
+
 module.exports = {
   createjwt,
   isvalidtoken,

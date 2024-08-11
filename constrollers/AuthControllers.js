@@ -9,7 +9,7 @@ const {
 const jwt = require("jsonwebtoken");
 const { createjwt,
   isvalidtoken,
-  attach_cookietoresp} = require('../utils');
+  attach_cookietoresp, CreateUserToken} = require('../utils');
 const register = async (req, res, next) =>
    {
     const {email,name,password}=req.body;
@@ -23,8 +23,8 @@ const register = async (req, res, next) =>
   const isFirstAccount=(await User.countDocuments({}))===0;
   const role=isFirstAccount? "admin":"user";
   try {
-    const user = await User.create({name,email,password,role});
-    const tokenUser={name:user.name,user_id:user._id,role:user.role};
+   const user = await User.create({ name, email, password, role });
+   const tokenUser= CreateUserToken(user);
     attach_cookietoresp({ res, user:tokenUser});
     // res.status(StatusCodes.CREATED).json({ user:tokenUser});
   } catch (error) 

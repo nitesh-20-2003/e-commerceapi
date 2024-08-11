@@ -15,10 +15,8 @@ const { CustomAPIError,
         }
         try {
             const payload=isvalidtoken({token});
-            req.user = { name: payload.name, payload_id: payload._id, role: payload.role };
-
+            req.user = { name: payload.name, payload_id: payload.user_id, role: payload.role };
             next();
-          console.log(payload);
         } catch (error) 
         {
             throw new UnauthenticatedError('Authentication Invalid');

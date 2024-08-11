@@ -12,6 +12,6 @@ const {authenticatepayload,authorizePermissions}=require('../middleware/authenti
 router.route("/").get(authorizePermissions('admin','owner'),getAllUsers);
 router.route("/showme").get(showCurrentUsers);
 router.route("/updateuser").patch(UpdateUsers);
-router.route("/UpdateUserspassword").post(authorizePermissions,UpdateUserspassword);
+router.route("/UpdateUserspassword").post(UpdateUserspassword);
 router.route("/:id").get(getsingleUsers);
 module.exports = router;
